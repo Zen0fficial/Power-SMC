@@ -28,21 +28,21 @@ Benchmarks in this folder include:
 
 This README describes the contents of the folder:
 
-- [reasoning/power-smc](reasoning/power-smc)
+- [power-smc](power-smc)
 
 Core scripts:
 
-- [reasoning/power-smc/power_samp_math.py](reasoning/power-smc/power_samp_math.py) — MATH benchmark driver
-- [reasoning/power-smc/power_samp_gsm.py](reasoning/power-smc/power_samp_gsm.py) — GSM8K benchmark driver
-- [reasoning/power-smc/power_samp_gpqa.py](reasoning/power-smc/power_samp_gpqa.py) — GPQA benchmark driver
-- [reasoning/power-smc/power_samp_utils.py](reasoning/power-smc/power_samp_utils.py) — shared generation/sampling helpers
-- [reasoning/power-smc/smc_samp_utils_noschedule_plus_halt_opt.py](reasoning/power-smc/smc_samp_utils_noschedule_plus_halt_opt.py) — SMC implementation
+- [power-smc/power_samp_math.py](power-smc/power_samp_math.py) — MATH benchmark driver
+- [power-smc/power_samp_gsm.py](power-smc/power_samp_gsm.py) — GSM8K benchmark driver
+- [power-smc/power_samp_gpqa.py](power-smc/power_samp_gpqa.py) — GPQA benchmark driver
+- [power-smc/power_samp_utils.py](power-smc/power_samp_utils.py) — shared generation/sampling helpers
+- [power-smc/smc_samp_utils_noschedule_plus_halt_opt.py](power-smc/smc_samp_utils_noschedule_plus_halt_opt.py) — SMC implementation
 
 Support files:
 
-- [reasoning/power-smc/constants.py](reasoning/power-smc/constants.py) — prompt templates/constants
-- [reasoning/power-smc/grader_utils](reasoning/power-smc/grader_utils) — grading and parsing utilities
-- [reasoning/power-smc/myjob.slurm](reasoning/power-smc/myjob.slurm) — example Slurm job script
+- [power-smc/constants.py](power-smc/constants.py) — prompt templates/constants
+- [power-smc/grader_utils](power-smc/grader_utils) — grading and parsing utilities
+- [power-smc/myjob.slurm](power-smc/myjob.slurm) — example Slurm job script
 
 ---
 
@@ -91,13 +91,13 @@ Expected local files/datasets include:
 - `openai/gsm8k` via `datasets`
 - `fingertap/GPQA-Diamond` via `datasets`
 
-HumanEval helper files are under [reasoning/power-smc/grader_utils](reasoning/power-smc/grader_utils).
+HumanEval helper files are under [power-smc/grader_utils](power-smc/grader_utils).
 
 ---
 
 ## Running Experiments
 
-From [reasoning/power-smc](reasoning/power-smc):
+From [power-smc](power-smc):
 
 - MATH:
   - `python -u power_samp_math.py --model qwen --temperature 0.25 --mcmc_steps 10`
@@ -105,15 +105,6 @@ From [reasoning/power-smc](reasoning/power-smc):
   - `python -u power_samp_gsm.py --model qwen --temperature 0.25 --mcmc_steps 10`
 - GPQA:
   - `python -u power_samp_gpqa.py --model qwen --temperature 0.25 --mcmc_steps 10`
-
-Example cluster launch script:
-
-- [reasoning/power-smc/myjob.slurm](reasoning/power-smc/myjob.slurm)
-
-Outputs and logs are typically written under:
-
-- `results/`
-- `*.log`
 
 ---
 
@@ -130,7 +121,7 @@ Common options across scripts:
 
 SMC-specific settings are defined in `SMCSamplingConfig` in:
 
-- [reasoning/power-smc/smc_samp_utils_noschedule_plus_halt_opt.py](reasoning/power-smc/smc_samp_utils_noschedule_plus_halt_opt.py)
+- [power-smc/smc_samp_utils_noschedule_plus_halt_opt.py](power-smc/smc_samp_utils_noschedule_plus_halt_opt.py)
 
 ---
 
