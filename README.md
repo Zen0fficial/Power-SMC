@@ -202,8 +202,3 @@ print(f"Selected from round {result['round_idx']}, particle {result['particle_id
 ```
 
 
----
-
-## License
-
-Add your preferred repository license file (`LICENSE`) before public release.
