@@ -1,5 +1,7 @@
 # Power-SMC
 
+![Power-SMC Concept](power_smc_concept.png)
+
 Codebase for experiments related to:
 
 **Power-SMC: Low-Latency Sequence-Level Power Sampling for Training-Free LLM Reasoning**  
