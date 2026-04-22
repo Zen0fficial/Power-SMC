@@ -360,6 +360,7 @@ def smc_power_sample_memopt(
     tokenizer,
     input_ids: torch.Tensor,  # [1, L]
     cfg: SMCSamplingConfig,
+    generator: Optional[torch.Generator] = None,
 ) -> Dict[str, Any]:
     """
     Power-SMC with Copy-on-Write KV cache deduplication.
@@ -376,7 +377,7 @@ def smc_power_sample_memopt(
     """
     assert input_ids.dim() == 2 and input_ids.size(0) == 1
     device = input_ids.device
-    g = torch.Generator(device=device)
+    g = generator
 
     N = int(cfg.n_particles)
     prompt_len = input_ids.size(1)
@@ -625,9 +626,11 @@ def smc_power_sample_memopt(
     return {
         "sequences": seqs_out,
         "log_w": log_w,
+        "cum_logp": cum_logp,
         "w": w,
         "chosen_idx": chosen_idx,
         "chosen_sequence": chosen_sequence,
+        "chosen_cum_logp": float(cum_logp[chosen_idx].item()),
         "stats": stats,
     }
 
@@ -645,6 +648,7 @@ def smc_power_sample_multiround(
     cfg: SMCSamplingConfig,
     physical_batch: int = 16,
     n_rounds: int = 2,
+    generator: Optional[torch.Generator] = None,
 ) -> Dict[str, Any]:
     """
     Multi-round SMC for when even N/2 particles don't fit in memory.
@@ -674,7 +678,9 @@ def smc_power_sample_multiround(
     round_cfg.n_particles = physical_batch
 
     for r in range(n_rounds):
-        result = smc_power_sample_memopt(model, tokenizer, input_ids, round_cfg)
+        result = smc_power_sample_memopt(
+            model, tokenizer, input_ids, round_cfg, generator=generator
+        )
 
         # Pad sequences to same length for stacking
         all_sequences.append(result["sequences"])
@@ -691,8 +697,7 @@ def smc_power_sample_multiround(
     w = torch.exp(lw)
 
     # Sample final particle
-    g = torch.Generator(device=input_ids.device)
-    chosen_global = int(torch.multinomial(w, 1, generator=g).item())
+    chosen_global = int(torch.multinomial(w, 1, generator=generator).item())
 
     round_idx = chosen_global // physical_batch
     particle_idx = chosen_global % physical_batch
